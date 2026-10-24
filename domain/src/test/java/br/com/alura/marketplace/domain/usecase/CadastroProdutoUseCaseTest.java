@@ -11,6 +11,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,6 +24,7 @@ import static br.com.alura.marketplace.domain.entity.factory.ProdutoFactory.cria
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
@@ -47,6 +51,17 @@ class CadastroProdutoUseCaseTest {
     @Nested
     class Cadastrar {
 
+        @BeforeEach
+        void beforeEach() {
+            lenient()
+                    .when(petStoreRepository.cadastrarPet(any()))
+                    .thenAnswer(invocation -> {
+                            Produto produto = invocation.getArgument(0);
+                            setField(produto, "petStorePetId", 99L);
+                            return produto;
+                        });
+        }
+
         @DisplayName("Então deve executar com sucesso")
         @Nested
         class Sucesso {
@@ -72,6 +87,42 @@ class CadastroProdutoUseCaseTest {
                 // Então
                 assertThat(atual.getProdutoId())
                         .isEqualTo(UUID.fromString("7625497a-0b0c-4e6e-b5d6-a07137975b49"));
+            }
+
+            @DisplayName("Dado um produto com o campo status igual a ${status}")
+            @ParameterizedTest
+            @EnumSource(Produto.Status.class)
+            void test2(Produto.Status status) {
+                //Dado
+                var produto = criarProduto().comTodosOsCampos();
+                setField(produto, "status", status);
+
+                // Quando
+                var atual = cadastroProdutoUseCase.cadastrar(produto);
+
+                // Entao
+                assertThat(atual.getStatus())
+                        .isEqualTo(status);
+            }
+
+            @DisplayName("Dado um produto com o campo status igual a ${status}")
+            @ParameterizedTest
+            @CsvSource(value = {
+                    "AVAILABLE | (Disponível)",
+                    "PENDING   | (Pendente)",
+                    "SOLD      | (Vendido)",
+            }, delimiterString = "|")
+            void test3(Produto.Status status, String descricaoEsperada) {
+                //Dado
+                var produto = criarProduto().comTodosOsCampos();
+                setField(produto, "status", status);
+
+                // Quando
+                var atual = cadastroProdutoUseCase.cadastrar(produto);
+
+                // Entao
+                assertThat(atual.getDescricao())
+                        .endsWith(descricaoEsperada);
             }
         }
 
