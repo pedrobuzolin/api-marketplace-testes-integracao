@@ -53,7 +53,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extrai metadata (tags, labels) do Docker
-        uses: docker/metadata-action@v6
+        id: meta
+        uses: docker/metadata-action@v5
         with:
           images: pedrobuzolin/api-market-place
 
