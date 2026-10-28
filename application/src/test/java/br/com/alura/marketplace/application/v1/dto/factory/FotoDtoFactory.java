@@ -22,7 +22,7 @@ public final class FotoDtoFactory {
         public FotoDto.Request comTodosOsCampos() {
             var result = builder
                     .fileName("file-name-1.jpg")
-                    .base64("Y29udGVudC0x")
+                    .base64("Y29udGV1ZG8=")
                     .build();
             // E
             afirmaQueOObjeto(result)
