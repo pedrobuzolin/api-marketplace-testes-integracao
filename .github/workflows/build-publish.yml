@@ -71,6 +71,6 @@ jobs:
       - name: Gera atestado da imagem
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: idex.docker.io/pedrobuzolin/api-market-place
+          subject-name: index.docker.io/pedrobuzolin/api-market-place
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
