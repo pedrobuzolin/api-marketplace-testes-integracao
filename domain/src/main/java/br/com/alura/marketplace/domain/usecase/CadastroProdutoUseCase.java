@@ -39,11 +39,9 @@ public class CadastroProdutoUseCase {
         produto.atualizar(produtoPetCadastrado);
 
         var produtoSalvo = produtoRepository.save(produto);
-//
-//        queueRepository.notificarCadastro(produtoSalvo);
-//
-//        return produtoSalvo;
 
-        return Produto.builder().build();
+        queueRepository.notificarCadastro(produtoSalvo);
+
+        return produtoSalvo;
     }
 }
