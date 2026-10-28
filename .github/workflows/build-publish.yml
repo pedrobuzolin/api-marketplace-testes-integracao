@@ -59,7 +59,7 @@ jobs:
 
       - name: Constroi e envia imagem Docker
         id: push
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
