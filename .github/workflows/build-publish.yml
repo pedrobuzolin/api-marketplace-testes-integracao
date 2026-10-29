@@ -29,7 +29,7 @@ jobs:
           name: api-market-place-artifact
           path: application/target
 
-  publish_to_registy:
+  publish_to_registry:
     needs: [build]
     runs-on: ubuntu-latest
     permissions:
