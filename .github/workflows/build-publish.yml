@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
-        uses: acrions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Configura JDK
         uses: actions/setup-java@v4
