@@ -76,7 +76,7 @@ jobs:
           push-to-registry: true
 
   integration_tests:
-    needs: [public_to_registry]
+    needs: [publish_to_registry]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
